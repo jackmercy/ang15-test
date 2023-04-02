@@ -1,7 +1,18 @@
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter, withInMemoryScrolling, withRouterConfig } from '@angular/router';
+import { AppRoutes } from './app/app-routing';
+import { AppComponent } from './app/app.component';
 
-import { AppModule } from './app/app.module';
-
-
-platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(
+      AppRoutes,
+      withInMemoryScrolling({
+        scrollPositionRestoration: 'enabled',
+      }),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload'
+      }),
+    ),
+  ]
+}).catch(err => console.error(err));
