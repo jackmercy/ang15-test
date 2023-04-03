@@ -1,6 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { FooterComponent } from 'src/main/footer/footer.component';
+import { ToolbarComponent } from 'src/main/toolbar/toolbar.component';
 
 @Component({
   selector: 'app-root',
@@ -8,10 +9,10 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [
-    CommonModule,
-    RouterModule
+    RouterModule,
+    ToolbarComponent,
+    FooterComponent
   ],
 })
 export class AppComponent {
-  title = 'ang15-test';
 }

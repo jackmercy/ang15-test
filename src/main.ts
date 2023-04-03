@@ -1,6 +1,6 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { provideRouter, withInMemoryScrolling, withRouterConfig } from '@angular/router';
-import { AppRoutes } from './app/app-routing';
+import { AppRoutes } from './core/route-config/app-routing';
 import { AppComponent } from './app/app.component';
 
 bootstrapApplication(AppComponent, {
