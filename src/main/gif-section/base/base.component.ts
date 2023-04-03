@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { MatRippleModule } from '@angular/material/core';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-base',
@@ -9,9 +11,34 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   imports: [
     RouterModule,
-    CommonModule
+    CommonModule,
+    MatRippleModule,
+    ReactiveFormsModule,
   ]
 })
-export class BaseComponent {
+export class BaseComponent implements OnInit {
+  private readonly fb = inject(FormBuilder);
+  private router = inject(Router);
+  private readonly activeRoute = inject(ActivatedRoute);
 
+  searchForm = this.fb.group({
+    q: ['']
+  });
+
+  ngOnInit(): void {
+    this.activeRoute.queryParams.subscribe(params => {
+      const search = params?.['q'] || '';
+      this.searchForm.get('q')?.setValue(search);
+
+      if (search === '') {
+        this.router.navigate(['/']);
+      }
+    });
+
+  }
+
+  public onSearchActivate() {
+    const search = this.searchForm.get('q')?.value;
+    this.router.navigate(['/search'], { queryParams: { q: search } });
+  }
 }
