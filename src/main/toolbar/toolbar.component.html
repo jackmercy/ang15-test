@@ -1,1 +1,14 @@
-<p>toolbar works!</p>
+<div class="relative flex w-full flex-wrap items-center justify-between bg-neutral-900 py-3 text-neutral-200 shadow-lg px-[36px]">
+  <div class="cursor-pointer" id="logo">
+    <img routerLink="" src="assets/logo.svg" alt="logo" width="90" height="38">
+  </div>
+
+  <button
+    routerLink="/upload"
+    type="button" 
+    data-te-ripple-init
+    data-te-ripple-color="light"
+    class="inline-block rounded bg-violet-500 px-6 py-2.5 text-[14px] font-medium leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-violet-700 hover:shadow-lg focus:bg-violet-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-violet-800 active:shadow-lg">
+    Upload
+  </button>
+</div>
