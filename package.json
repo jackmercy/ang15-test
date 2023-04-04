@@ -23,6 +23,7 @@
     "@rx-angular/cdk": "latest",
     "@rx-angular/state": "^2.0.0",
     "@rx-angular/template": "^2.0.0",
+    "ngx-infinite-scroll": "^15.0.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "tw-elements": "^1.0.0-beta1",

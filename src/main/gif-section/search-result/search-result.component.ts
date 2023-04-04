@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-search-result',
@@ -10,6 +11,16 @@ import { Component } from '@angular/core';
     CommonModule
   ]
 })
-export class SearchResultComponent {
+export class SearchResultComponent implements OnInit {
+  private readonly activeRoute = inject(ActivatedRoute);
 
+  searchTerm: string = ''
+
+  ngOnInit(): void {
+    this.activeRoute.queryParams.subscribe(params => {
+      this.searchTerm = params?.['q'] || '';
+
+      // load search results here
+    });
+  }
 }

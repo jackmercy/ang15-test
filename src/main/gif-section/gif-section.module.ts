@@ -4,6 +4,7 @@ import { BaseComponent } from './base/base.component';
 import { TrendingComponent } from './trending/trending.component';
 import { SearchResultComponent } from './search-result/search-result.component';
 import { RouterModule } from '@angular/router';
+import { GifService } from './gif.service';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { RouterModule } from '@angular/router';
     BaseComponent,
     TrendingComponent,
     SearchResultComponent
-  ]
+  ],
+  providers: [GifService]
 })
 export class GifSectionModule { }
