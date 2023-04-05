@@ -29,5 +29,12 @@ export interface GifItem {
       frames: string;
       hash: string;
     };
+    fixed_width: {
+      height: string;
+      size: string;
+      url: string;
+      width: string;
+      webp: string;
+    }
   }
 }

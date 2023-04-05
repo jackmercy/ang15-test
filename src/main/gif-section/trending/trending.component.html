@@ -6,5 +6,7 @@
   </div>
 
   <!-- Infinite scroll items -->
-  <app-infinite-list [items]="trendingGifs$ | async" (loadMoreData)="onLoadMoreData()"></app-infinite-list>
+  <div class="w-full">
+    <app-infinite-list [items]="trendingGifs$ | async" (loadMoreData)="onLoadMoreData()"></app-infinite-list>
+  </div>
 </div>

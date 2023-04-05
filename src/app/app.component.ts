@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CoreModule } from 'src/core/core.module';
 import { FooterComponent } from 'src/main/footer/footer.component';
 import { ToolbarComponent } from 'src/main/toolbar/toolbar.component';
 
@@ -11,7 +12,8 @@ import { ToolbarComponent } from 'src/main/toolbar/toolbar.component';
   imports: [
     RouterModule,
     ToolbarComponent,
-    FooterComponent
+    FooterComponent,
+    CoreModule
   ],
 })
 export class AppComponent implements OnInit {

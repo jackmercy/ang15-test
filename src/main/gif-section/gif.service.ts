@@ -1,21 +1,35 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { GifItem } from 'src/core/model/gif.model';
+import { GiphyParams } from 'src/core/model/giphy';
+import { ApiKeyService } from 'src/core/services/api-key.service';
+
+export interface GiphyPagination {
+  total_count: number;
+  count?: number;
+  offset: number;
+}
+
+export interface GiphyMeta {
+  status: number;
+  msg: string;
+  response_id: string;
+}
+export interface GiphyQueryResponse {
+  data: Partial<GifItem>[];
+  pagination: GiphyPagination;
+  meta: GiphyMeta
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class GifService {
+  private readonly http = inject(HttpClient);
+  private readonly apiKeyService = inject(ApiKeyService);
 
-  loadMore() {
-    return Array.from({length: 50}).map((_, i) => ({
-      id: `${i}`,
-      url: 'https://media0.giphy.com/media/3o7TKsQ8UQ1wWu1GZK/giphy.gif',
-      images: {
-        original: {
-          url: 'https://media2.giphy.com/media/MRQ83Jbg9C6lG79Ryk/giphy.gif?cid=beeb6e295ze1839az3jld7st7ym1kwncffhpxd4wbehpipiv&rid=giphy.gif&ct=g',
-        }
-      }
-    } as Partial<GifItem>));
+  public getTrendingGifs(params: Partial<GiphyParams>): Observable<GiphyQueryResponse> {
+    return this.http.get<GiphyQueryResponse>(this.apiKeyService.getTrendingApi(params));
   }
 }

@@ -7,6 +7,10 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [require("tw-elements/dist/plugin")]
+  plugins: [
+    require("postcss-import"),
+    require("autoprefixer"),
+    require("tw-elements/dist/plugin")
+  ]
 }
 

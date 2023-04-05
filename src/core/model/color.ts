@@ -1,0 +1,18 @@
+export const TW_COLORS_NAME = [
+  { name: 'stone', hex: '#e5e7eb' },
+  { name: 'red', hex: '#ef4444' },
+  { name: 'orange', hex: '#f59e0b' },
+  { name: 'amber', hex: '#fbbf24' },
+  { name: 'yellow', hex: '#f59e0b' },
+  { name: 'lime', hex: '#84cc16' },
+  { name: 'green', hex: '#10b981' },
+  { name: 'emerald', hex: '#10b981' },
+  { name: 'teal', hex: '#14b8a6' },
+  { name: 'cyan', hex: '#06b6d4' },
+  { name: 'sky', hex: '#3b82f6' },
+  { name: 'blue', hex: '#3b82f6' },
+  { name: 'indigo', hex: '#6366f1' },
+  { name: 'violet', hex: '#8b5cf6' },
+  { name: 'purple', hex: '#8b5cf6' },
+  { name: 'fuchsia', hex: '#8b5cf6' },
+];

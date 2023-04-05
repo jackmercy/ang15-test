@@ -1,6 +1,14 @@
-<div class="content flex flex-col gap-2" infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50">
-  <div *ngFor="let item of items">
-    <p>{{ item.id }}</p>
-    <img [src]="item?.images?.original?.url" alt="gif" width="50" height="50">
+<!-- Pure css version, but not working properly on resize and load more image -->
+<!-- <div class="masonry" infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50">
+  <div *ngFor="let item of items; let i = index" class="masonry-item" [style]="getGifItemStyles(item)">
+    <img [src]="item?.images?.original?.url" loading="lazy" alt="gif" width="248" [height]="item?.images?.original?.height || 248"  onerror="this.style.display=''">
   </div>
-</div>
+</div> -->
+
+<ngx-masonry class="w-[1080px] mx-auto my-0" [options]="masonryOptions" infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50">
+  <div ngxMasonryItem *ngFor="let item of items; let i = index" class="masonry-layout-item" [style]="getGifItemStyles(i)">
+    <img (load)="onImageLoad($event, i)" [src]="item?.images?.fixed_width?.url" masonryLazy loading="eager" [alt]="item?.title" width="200"
+      [height]="item?.images?.fixed_width?.height || 248" onerror="this.style.display=''">
+  </div>
+</ngx-masonry>
