@@ -38,7 +38,8 @@
               "src/styles.scss"
             ],
             "scripts": [
-              "node_modules/tw-elements/dist/js/index.min.js"
+              "node_modules/tw-elements/dist/js/index.min.js",
+              "node_modules/flowbite/dist/flowbite.min.js"
             ]
           },
           "configurations": {

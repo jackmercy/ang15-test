@@ -6,7 +6,7 @@ import { GIPHY_API, GiphyApiObject, GiphyParams } from '../model/giphy';
   providedIn: 'root'
 })
 export class ApiKeyService {
-  private readonly GIPHY = GIPHY_API;
+  public readonly GIPHY = GIPHY_API;
   private readonly http = inject(HttpClient);
 
   private getQueryApi(api: GiphyApiObject, params: Partial<GiphyParams>): string {
@@ -26,5 +26,9 @@ export class ApiKeyService {
 
   public getSearchApi(params: Partial<GiphyParams>): string {
     return this.getQueryApi(this.GIPHY.search, params);
+  }
+
+  public getUploadApi(): string {
+    return this.GIPHY.upload.url;
   }
 }

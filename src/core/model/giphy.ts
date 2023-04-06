@@ -1,6 +1,6 @@
 // Due to daily limit of 1000 requests, I have to use two different api keys
 
-type GiphyApiKey = 'trending' | 'search' | 'detail';
+type GiphyApiKey = 'trending' | 'search' | 'detail' | 'upload';
 
 export type GiphyApi = {
   [key in GiphyApiKey]: GiphyApiObject;
@@ -30,8 +30,12 @@ export const GIPHY_API: GiphyApi = {
     url: 'https://api.giphy.com/v1/gifs/search',
     api_key: 'IDd20KEx3GYlWVU4eZDlBhkyYv5gLo6B',
   },
+  upload: {
+    url: 'https://upload.giphy.com/v1/gifs',
+    api_key: 'zpD8FN2HK5hkktavai4ScfvZSndS0M8M'
+  },
   detail: {
     url: 'https://api.giphy.com/v1/gifs',
     api_key: 'IDd20KEx3GYlWVU4eZDlBhkyYv5gLo6B',
-  }
+  },
 }
