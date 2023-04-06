@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, map } from 'rxjs';
 import { GifItem } from 'src/core/model/gif.model';
 import { GiphyParams } from 'src/core/model/giphy';
 import { ApiKeyService } from 'src/core/services/api-key.service';
@@ -17,7 +17,7 @@ export interface GiphyMeta {
   response_id: string;
 }
 export interface GiphyQueryResponse {
-  data: Partial<GifItem>[];
+  data: GifItem[];
   pagination: GiphyPagination;
   meta: GiphyMeta
 }

@@ -5,8 +5,8 @@
     <div class="text-white text-[24px] font-bold">Trending</div>
   </div>
 
-  <!-- Infinite scroll items -->
-  <div class="w-full">
-    <app-infinite-list [items]="trendingGifs$ | async" (loadMoreData)="onLoadMoreData()"></app-infinite-list>
+  <!-- Infinite scroll items: margin bottom 172px for show loading at the bottom of gifs list - avoid footer -->
+  <div class="w-full mb-[172px]" *rxIf="trendingGifs$; let gifs">
+    <app-infinite-list [items]="gifs" (loadMoreData)="onLoadMoreData()" [loading]="loading"></app-infinite-list>
   </div>
 </div>
