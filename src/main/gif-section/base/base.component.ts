@@ -30,11 +30,15 @@ export class BaseComponent implements OnInit {
       const search = params?.['q'] || '';
       this.searchForm.get('q')?.setValue(search);
 
-      if (search === '') {
+      if (search === '' && this.isSearchRoute()) {
         this.router.navigate(['/']);
       }
     });
 
+  }
+
+  private isSearchRoute(): boolean {
+    return this.router.url.includes('search');
   }
 
   public onSearchActivate() {

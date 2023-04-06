@@ -1,0 +1,12 @@
+<div id="trending-container" class="flex flex-col justify-center items-start">
+  <!-- Header -->
+  <div class="flex flex-row gap-2 items-center">
+    <mat-icon class="text-pink-400 cursor-pointer rounded" aria-hidden="false" aria-label="Favorite" fontIcon="favorite"></mat-icon>
+    <div class="text-white text-[24px] font-bold">Your Favorite Gifs</div>
+  </div>
+
+  <!-- Infinite scroll items: margin bottom 172px for show loading at the bottom of gifs list - avoid footer -->
+  <div class="w-full mb-[172px]">
+    <app-infinite-list [items]="favoriteGifs"></app-infinite-list>
+  </div>
+</div>

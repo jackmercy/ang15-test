@@ -8,11 +8,17 @@
 <!-- Since I use masonry layout, the expand single is posible but not a good UX because the image will 
 re-layout -> image expand and change position, make user hard to track where is the image. So I will use the detail dialog to
 show gif detail instead. -->
-<ngx-masonry class="w-[1080px] mx-auto my-0 cursor-pointer" [options]="masonryOptions" infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0"
-  [infiniteScrollThrottle]="50">
-  <div ngxMasonryItem *rxFor="let item of items; let i = index" class="masonry-layout-item" [style]="getGifItemStyles(i)" (click)="onOpenGifDetail(item)">
-    <img (load)="onImageLoad($event, i)" [src]="item?.images?.fixed_width?.url" masonryLazy loading="eager" [alt]="item?.title" width="200"
+<ngx-masonry class="w-[1080px] mx-auto my-0 cursor-pointer" *rxIf="items.length > 0; else empty"
+  [options]="masonryOptions"  infiniteScroll (scrolled)="onScroll()" [infiniteScrollDistance]="0" [infiniteScrollThrottle]="50">
+  <div ngxMasonryItem *rxFor="let item of items; let i = index" class="masonry-layout-item" [style]="getGifItemStyles(i)"
+    (click)="onOpenGifDetail(item)">
+    <img (load)="onImageLoad($event, i)" [src]="item?.images?.fixed_width?.url" masonryLazy loading="lazy" [alt]="item?.title" width="200"
       [height]="item?.images?.fixed_width?.height || 248" onerror="this.style.display=''">
   </div>
 </ngx-masonry>
+<ng-template #empty>
+  <div *ngIf="!loading" class="text-[24px] text-white flex justify-center items-center">
+    No gif found
+  </div>
+</ng-template>
 <app-loading [loading]="loading"></app-loading>

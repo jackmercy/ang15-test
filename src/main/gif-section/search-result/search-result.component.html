@@ -1,9 +1,12 @@
-<p>search-result works!</p>
-<!-- <div id="search-count" class="mt-6">
-  <p class="text-white font-[18px]">
-    {{ searchForm.get('q')?.value }}
-  </p>
-  <p class="text-gray-400 fon-[14px]">
-    {{ searchCount }} GIF(s) found
-  </p>
-</div> -->
+<div id="trending-container" class="flex flex-col justify-center items-start">
+  <!-- Header -->
+  <div class="flex flex-row gap-2 mb-5">
+    <img src="assets/search-icon.svg" alt="trending" width="24" height="24">
+    <div class="text-white text-[24px] font-bold">Search Result: <span class="text-zinc-400 text-[20px]"> {{ pagination.total_count || 0 }} GIFs</span></div>
+  </div>
+
+  <!-- Infinite scroll items: margin bottom 172px for show loading at the bottom of gifs list - avoid footer -->
+  <div class="w-full mb-[172px]" *rxIf="searchGifs$; let gifs">
+    <app-infinite-list [items]="gifs" (loadMoreData)="onLoadMoreData()" [loading]="loading"></app-infinite-list>
+  </div>
+</div>

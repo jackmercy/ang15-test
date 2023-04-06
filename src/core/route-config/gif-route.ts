@@ -12,6 +12,10 @@ export default [
       {
         path: 'search',
         loadComponent: () => import('../../main/gif-section/search-result/search-result.component').then(c => c.SearchResultComponent)
+      },
+      {
+        path: 'favorite',
+        loadComponent: () => import('../../main/gif-section/favorite/favorite.component').then(c => c.FavoriteComponent)
       }
     ]
   }
