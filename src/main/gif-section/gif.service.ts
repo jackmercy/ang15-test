@@ -38,13 +38,13 @@ export class GifService {
   private readonly localFavoriteKey = 'local_favorite_gifs' as const;
   private readonly http = inject(HttpClient);
   private readonly apiKeyService = inject(ApiKeyService);
-  private _favoriteGifs: GifItem[] = this.localStorageFavoriteGifs;
+  private _favoriteGifs: string[] = this.localStorageFavoriteGifs;
 
-  private get localStorageFavoriteGifs(): GifItem[] {
+  private get localStorageFavoriteGifs(): string[] {
     return JSON.parse(localStorage.getItem(this.localFavoriteKey) || '[]');
   }
 
-  public get favoriteGifs(): GifItem[] {
+  public get favoriteGifs(): string[] {
     return this.localStorageFavoriteGifs;
   }
 
@@ -79,22 +79,26 @@ export class GifService {
     return this.http.get<GiphyQueryResponse>(this.apiKeyService.getSearchApi(params));
   }
 
+  public getGifsByIds(params: Partial<GiphyParams>): Observable<GiphyQueryResponse> {
+    return this.http.get<GiphyQueryResponse>(this.apiKeyService.getGifsByIdsApi(params));
+  }
+
   public addFavoriteGif(item: GifItem): void {
-    const index = this._favoriteGifs.findIndex(gif => gif.id === item.id);
+    const index = this._favoriteGifs.findIndex(id => id === item.id);
     if (index === -1) {
-      this._favoriteGifs.push(item);
+      this._favoriteGifs.push(item.id);
       localStorage.setItem(this.localFavoriteKey, JSON.stringify(this._favoriteGifs));
     }
   }
 
   public removeFavoriteGif(item: GifItem): void {
-    const index = this._favoriteGifs.findIndex(gif => gif.id === item.id);
+    const index = this._favoriteGifs.findIndex(id => id === item.id);
     if (index !== -1) {
       this._favoriteGifs.splice(index, 1);
     }
   }
 
   public isFavoriteGif(item: GifItem): boolean {
-    return this._favoriteGifs.some(gif => gif.id === item.id);
+    return this._favoriteGifs.some(id => id === item.id);
   }
 }

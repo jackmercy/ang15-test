@@ -31,4 +31,9 @@ export class ApiKeyService {
   public getUploadApi(): string {
     return this.GIPHY.upload.url;
   }
+  
+
+  public getGifsByIdsApi(params: Partial<GiphyParams>) {
+    return this.getQueryApi(this.GIPHY.ids, params);
+  }
 }
