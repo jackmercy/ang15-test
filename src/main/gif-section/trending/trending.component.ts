@@ -45,6 +45,7 @@ export class TrendingComponent implements OnInit, OnDestroy {
   public loading = false;
 
   ngOnInit(): void {
+    // Connect to the params and load the trending gifs
     this.params.asObservable().pipe(
       takeUntil(this.unSubscribe)
     ).subscribe((params) => {

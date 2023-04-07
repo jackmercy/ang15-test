@@ -1,5 +1,6 @@
 <form [formGroup]="formUpload" id="upload-container" class="mt-5 w-full px-[36px]">
   <div class="relative w-full py-3">
+    <!-- Loading + backdrop for uploda form -->
     <div *rxIf="loadingUploadFile" class="absolute backdrop-brightness-50 w-full h-full flex items-center justify-center">
       <div
         class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
@@ -8,6 +9,8 @@
           class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">Loading...</span>
       </div>
     </div>
+
+    <!-- Upload input and label -->
     <label class="block mb-2 text-white text-[24px] font-bold" for="multiple_files">Upload multiple files</label>
     <div class="text-gray-400 italic text-[12px]">Note: Only gif/mp4 files are allowed and not over 100MB per file.</div>
     <input fileDrop (change)="onFileChange($event)" [formControlName]="'files'"
@@ -16,13 +19,14 @@
     <div *rxIf="fileError" class="text-red-500 italic text-[13px]">
       One of your selected files is not a gif/mp4 or over 100MB
     </div>
+    <!-- Select file names -->
     <div class="mt-2 flex flex-col gap-3">
       <div class="mb-2" *ngIf="fileNames.length > 0">Loaded files:</div>
       <div *ngFor="let item of fileNames" class="text-white text-[14px]">
         {{ item }}
       </div>
     </div>
-
+    <!-- Upload button -->
     <div id="action-layout" class="w-full flex flex-row items-center justify-end mt-5">
       <button type="button" data-te-ripple-init data-te-ripple-color="light" (click)="onUploadFilesClick()"
         class="inline-block rounded bg-green-500 px-6 py-2.5 text-[14px] font-medium leading-tight text-white shadow-md transition duration-150 ease-in-out hover:bg-green-700 hover:shadow-lg focus:bg-green-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-green-800 active:shadow-lg">
@@ -31,6 +35,7 @@
     </div>
   </div>
 
+  <!-- Display uploaded gifs -->
   <div class="w-full mb-[172px] mt-7 flex flex-col gap-5">
     <div class="text-white text-[24px] font-bold">Uploaded Gifs</div>
     <div class="text-gray-400 italic text-[12px]">NOTE: It take sometime for the GIPHY server update the channel gifs data</div>
