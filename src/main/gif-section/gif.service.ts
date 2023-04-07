@@ -28,7 +28,7 @@ export interface GiphyUploadResponse {
 }
 
 export interface GiphyChannelResponse {
-  result: GifItem[];
+  results: GifItem[];
 }
 
 @Injectable({

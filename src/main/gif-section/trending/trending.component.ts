@@ -6,6 +6,7 @@ import { InfiniteListComponent } from 'src/shared/components/infinite-list/infin
 import { GifService, GiphyPagination } from '../gif.service';
 import { GiphyParams } from 'src/core/model/giphy';
 import { IfModule } from '@rx-angular/template/if';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-trending',
@@ -22,6 +23,7 @@ import { IfModule } from '@rx-angular/template/if';
 export class TrendingComponent implements OnInit, OnDestroy {
   private readonly gifService = inject(GifService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly toastr = inject(ToastrService);
 
   private trendingGifs = new BehaviorSubject<GifItem[]>([]);
   public trendingGifs$: Observable<GifItem[]> = this.trendingGifs.asObservable();
@@ -48,11 +50,18 @@ export class TrendingComponent implements OnInit, OnDestroy {
     ).subscribe((params) => {
       this.pagination.offset += params.limit;
       this.loading = true;
-      this.gifService.getTrendingGifs(params).pipe(takeUntil(this.unSubscribe)).subscribe((res) => {
-        this.trendingGifs.next([...this.trendingGifs.value, ...res.data]);
-        this.pagination = res.pagination;
-        this.loading = false;
-        this.cdr.markForCheck();
+      this.gifService.getTrendingGifs(params).pipe(takeUntil(this.unSubscribe)).subscribe({
+        next: (res) => {
+          this.trendingGifs.next([...this.trendingGifs.value, ...res.data]);
+          this.pagination = res.pagination;
+          this.loading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.loading = false;
+          this.toastr.error('Something went wrong. Try again later!', 'Error');
+          this.cdr.markForCheck();
+        }
       });
     });
   }

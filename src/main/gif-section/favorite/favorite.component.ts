@@ -6,6 +6,7 @@ import { GifItem } from 'src/core/model/gif.model';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
 import { GiphyParams } from 'src/core/model/giphy';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-favorite',
@@ -18,6 +19,7 @@ import { GiphyParams } from 'src/core/model/giphy';
 export class FavoriteComponent implements OnInit, OnDestroy {
   private readonly gifService = inject(GifService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly toastr = inject(ToastrService);
 
   private params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating'>>({
     limit: 30,
@@ -44,11 +46,18 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       this.gifService.getGifsByIds({
         ...params,
         ids: this.favoriteGifIds.join(',')
-      }).pipe(takeUntil(this.unSubscribe)).subscribe((res) => {
-        this.favoriteGifs = [...this.favoriteGifs, ...res.data];
-        this.pagination = res.pagination;
-        this.loading = false;
-        this.cdr.markForCheck();
+      }).pipe(takeUntil(this.unSubscribe)).subscribe({
+        next: (res) => {
+          this.favoriteGifs = [...this.favoriteGifs, ...res.data];
+          this.pagination = res.pagination;
+          this.loading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.loading = false;
+          this.toastr.error('Something went wrong. Try again later!', 'Error');
+          this.cdr.markForCheck();
+        }
       });
     });
   }

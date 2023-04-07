@@ -29,6 +29,7 @@
     "ngx-file-drop": "^15.0.0",
     "ngx-infinite-scroll": "^15.0.0",
     "ngx-masonry": "^14.0.1",
+    "ngx-toastr": "^16.1.0",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",
     "tw-elements": "^1.0.0-beta1",

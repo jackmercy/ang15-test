@@ -8,6 +8,7 @@ import { BehaviorSubject, Observable, Subject, debounceTime, distinctUntilChange
 import { GifItem } from 'src/core/model/gif.model';
 import { GiphyParams } from 'src/core/model/giphy';
 import { isEmpty } from 'lodash-es';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-search-result',
@@ -25,6 +26,7 @@ export class SearchResultComponent implements OnInit {
   private readonly activeRoute = inject(ActivatedRoute);
   private readonly gifService = inject(GifService);
   private readonly router = inject(Router);
+  private readonly toastr = inject(ToastrService);
   private readonly cdr = inject(ChangeDetectorRef);
 
   private searchGifs = new BehaviorSubject<GifItem[]>([]);
@@ -50,6 +52,7 @@ export class SearchResultComponent implements OnInit {
   public loading = false;
 
   ngOnInit(): void {
+    // Create a subscription to the params for load more gif
     this.params.asObservable().pipe(
       takeUntil(this.unSubscribe)
     ).subscribe((params) => {
@@ -59,15 +62,23 @@ export class SearchResultComponent implements OnInit {
         this.gifService.searchGifs({
           ...params,
           q: this.searchTerm.value
-        }).pipe(takeUntil(this.unSubscribe)).subscribe((res) => {
-          this.searchGifs.next([...this.searchGifs.value, ...res.data]);
-          this.pagination = res.pagination;
-          this.loading = false;
-          this.cdr.markForCheck();
+        }).pipe(takeUntil(this.unSubscribe)).subscribe({
+          next: (res) => {
+            this.searchGifs.next([...this.searchGifs.value, ...res.data]);
+            this.pagination = res.pagination;
+            this.loading = false;
+            this.cdr.markForCheck();
+          },
+          error: (err) => {
+            this.loading = false;
+            this.toastr.error('Something went wrong. Try again later!', 'Error');
+            this.cdr.markForCheck();
+          }
         });
       }
     });
 
+    // Create a subscription to the search term for search gif
     this.searchTerm.asObservable().pipe(
       debounceTime(200),
       distinctUntilChanged(),
@@ -79,11 +90,18 @@ export class SearchResultComponent implements OnInit {
         ...this.params.value,
         q: term,
         offset: 0
-      }).pipe(takeUntil(this.unSubscribe)).subscribe((res) => {
-        this.searchGifs.next([...res.data]);
-        this.pagination = res.pagination;
-        this.loading = false;
-        this.cdr.markForCheck();
+      }).pipe(takeUntil(this.unSubscribe)).subscribe({
+        next: (res) => {
+          this.searchGifs.next([...res.data]);
+          this.pagination = res.pagination;
+          this.loading = false;
+          this.cdr.markForCheck();
+        },
+        error: (err) => {
+          this.loading = false;
+          this.toastr.error('Something went wrong. Try again later!', 'Error');
+          this.cdr.markForCheck();
+        }
       });
     });
 
