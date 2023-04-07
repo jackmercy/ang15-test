@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { GifService, GiphyPagination } from '../gif-section/gif.service';
 import { NgxFileDropModule } from 'ngx-file-drop';
-import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, Subject, concat, concatMap, merge, takeUntil } from 'rxjs';
 import { GiphyParams } from 'src/core/model/giphy';
 import { GifItem } from 'src/core/model/gif.model';
 import { InfiniteListComponent } from 'src/shared/components/infinite-list/infinite-list.component';
@@ -52,26 +52,28 @@ export class UploadGifsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.params.asObservable().pipe(
       takeUntil(this.unSubscribe)
-    ).subscribe(() => {
-      this.loadingGifs = true;
-      this.giphyService.getUploadedGifs().pipe(takeUntil(this.unSubscribe)).subscribe({
-        next: (res) => {
-          this.uploadedGifs = [...res.results];
-          this.loadingGifs = false;
-          this.cdr.markForCheck();
-        },
-        error: (err) => {
-          this.loadingGifs = false;
-          this.toastr.error('Something went wrong. Try again later!', 'Error');
-          this.cdr.markForCheck();
-        }
-      });
-    });
+    ).subscribe(() => { this.loadUploadedGifs(); });
   }
 
   ngOnDestroy(): void {
     this.unSubscribe.next();
     this.unSubscribe.complete();
+  }
+
+  loadUploadedGifs() {
+    this.loadingGifs = true;
+    this.giphyService.getUploadedGifs().pipe(takeUntil(this.unSubscribe)).subscribe({
+      next: resp => {
+        this.uploadedGifs = [...resp.results];
+        this.loadingGifs = false;
+        this.cdr.markForCheck();
+      },
+      error: error => {
+        console.error(error);
+        this.loadingGifs = false;
+        this.toastr.error('Something went wrong. Try again later!', 'Error');
+      }
+    });
   }
 
   onLoadMoreData() {
@@ -85,28 +87,22 @@ export class UploadGifsComponent implements OnInit, OnDestroy {
 
   onUploadFilesClick(): void {
     this.loadingUploadFile = true;
-    const files = this.formUpload.get('files')?.value as File[];
-
-    this.giphyService.uploadGiphy(files).pipe(takeUntil(this.unSubscribe)).subscribe({
+    const filesArray: File[] = [].slice.call(this.formUpload.get('files')?.value);
+    const files$ = filesArray.map(f => this.giphyService.uploadGiphy(f).pipe(takeUntil(this.unSubscribe)));
+    const fileNameUploaded = new BehaviorSubject<number>(0);
+    // NOTE: since GIPHY only allow upload 1 file at a time, we need to use concat to make sure the order of files is correct
+    concat(...files$).subscribe({
       next: resp => {
-        if (resp.meta.status === 200) {
-          this.toastr.success('Success! Reload uploaded gifs now.', 'Upload Gifs:');
-          this.giphyService.getUploadedGifs().pipe(takeUntil(this.unSubscribe)).subscribe({
-            next: resp => {
-              this.uploadedGifs = [...resp.results];
-             
-              this.cdr.markForCheck();
-            },
-            error: error => {
-              console.error(error);
-              this.loadingGifs = false;
-              this.toastr.error('Something went wrong. Try again later!', 'Error');
-            }
-          });
-          this.formUpload.reset();
-          this.fileNames = [];
+        console.log(resp);
+        if (resp?.meta?.status === 200) {
+          this.toastr.success(`Uploaded Gif #${fileNameUploaded.value + 1}!`, `SUCCESS`);
+          fileNameUploaded.next(fileNameUploaded.value + 1);
         }
-        this.loadingUploadFile = false;
+        if (fileNameUploaded.value === filesArray.length) {
+          this.loadUploadedGifs();
+          this.onClearFiles();
+          this.loadingUploadFile = false;
+        }
       },
       error: error => {
         console.error(error);

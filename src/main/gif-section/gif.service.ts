@@ -57,13 +57,9 @@ export class GifService {
     return this.http.get<GiphyChannelResponse>('https://giphy.com/api/v4/channels/48603625/feed/');
   }
 
-  uploadGiphy(files: File[]): Observable<GiphyUploadResponse> {
+  uploadGiphy(file: File): Observable<GiphyUploadResponse> {
     const formData = new FormData();
-  
-    for (const file of files) {
-      formData.append('file', file, file.name);
-    }
-
+    formData.append('file', file, file.name);
     formData.append('api_key', this.apiKeyService.GIPHY.upload.api_key);
   
     return this.http.post<GiphyUploadResponse>(this.apiKeyService.getUploadApi(), formData).pipe(
