@@ -34,7 +34,6 @@ export class BaseComponent implements OnInit {
         this.router.navigate(['/']);
       }
     });
-
   }
 
   private isSearchRoute(): boolean {
