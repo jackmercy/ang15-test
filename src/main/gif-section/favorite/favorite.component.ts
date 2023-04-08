@@ -21,7 +21,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly toastr = inject(ToastrService);
 
-  private params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating'>>({
+  public params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating'>>({
     limit: 30,
     rating: 'g',
     offset: 0
@@ -45,7 +45,7 @@ export class FavoriteComponent implements OnInit, OnDestroy {
       this.loading = true;
       this.gifService.getGifsByIds({
         ...params,
-        ids: this.favoriteGifIds.join(',')
+        ids: this.favoriteGifIds?.join(',') || ''
       }).pipe(takeUntil(this.unSubscribe)).subscribe({
         next: (res) => {
           this.favoriteGifs = [...this.favoriteGifs, ...res.data];

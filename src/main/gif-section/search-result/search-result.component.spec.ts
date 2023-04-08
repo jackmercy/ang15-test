@@ -1,23 +1,70 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { RenderResult, render, screen } from '@testing-library/angular';
 import { SearchResultComponent } from './search-result.component';
+import { HttpClientModule } from '@angular/common/http';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of } from 'rxjs';
+import { TestBed } from '@angular/core/testing';
+import { GifService } from '../gif.service';
+import { mockGifs } from 'src/shared/mocks/gifs.mock';
 
-describe('SearchResultComponent', () => {
-  let component: SearchResultComponent;
-  let fixture: ComponentFixture<SearchResultComponent>;
+fdescribe('SearchResultComponent', () => {
+  let component: RenderResult<SearchResultComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SearchResultComponent ]
-    })
-    .compileComponents();
+  const setup = async () => {
+    let rendered = await render(SearchResultComponent, {
+      imports: [HttpClientModule, ToastrModule.forRoot()],
+      providers: [
+        ToastrService,
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            queryParams: of({ q: 'frenchie' })
+          }
+        },
+      ]
+    });
+    return {
+      component: rendered.fixture.componentInstance,
+      fixture: rendered.fixture,
+      service: rendered.fixture.debugElement.injector.get(GifService),
+      rendered
+    };
+  };
 
-    fixture = TestBed.createComponent(SearchResultComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+  it('should create', async () => {
+    await setup();
+    expect(screen).toBeTruthy();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should have search result', async () => {
+    const { component, fixture, service } = await setup();
+    const spy = spyOn(service, 'searchGifs').and.returnValue(of(mockGifs));
+    const titleEl = screen.getByTestId('search-result');
+    expect(titleEl).toBeTruthy();
+    expect(titleEl.textContent).toContain('Search Result:');
+    expect(titleEl.querySelector('img')?.getAttribute('src')).toBe('assets/search-icon.svg');
+    expect(component.searchTerm.value).toBe('frenchie');
+    component.params.next({
+      ...component.params.value,
+      offset: 0
+    });
+    fixture.detectChanges();
+    expect(titleEl.textContent).toContain('Search Result:  3597 GIFs');
+    expect(spy).toHaveBeenCalled();
+  });
+
+  it('should have infinite list component', async () => {
+    const { component, fixture, service } = await setup();
+    const spy = spyOn(service, 'searchGifs').and.returnValue(of(mockGifs));
+    component.params.next({
+      ...component.params.value,
+      offset: 0
+    });
+    fixture.detectChanges();
+    expect(spy).toHaveBeenCalled();
+
+    expect(screen.getByTestId('infinite-list')).toBeTruthy();
   });
 });

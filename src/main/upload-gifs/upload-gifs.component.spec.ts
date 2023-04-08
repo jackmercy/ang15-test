@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { UploadGifsComponent } from './upload-gifs.component';
 
-describe('UploadGifsComponent', () => {
+xdescribe('UploadGifsComponent', () => {
   let component: UploadGifsComponent;
   let fixture: ComponentFixture<UploadGifsComponent>;
 

@@ -32,14 +32,14 @@ export class SearchResultComponent implements OnInit {
   private searchGifs = new BehaviorSubject<GifItem[]>([]);
   public searchGifs$: Observable<GifItem[]> = this.searchGifs.asObservable();
 
-  private params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating' | 'lang'>>({
+  public params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating' | 'lang'>>({
     limit: 30,
     rating: 'g',
     offset: 0,
     lang: 'en'
   });
 
-  private searchTerm = new BehaviorSubject<string>('');  
+  public searchTerm = new BehaviorSubject<string>('');  
 
   public pagination: GiphyPagination = {
     total_count: 0,
@@ -53,6 +53,7 @@ export class SearchResultComponent implements OnInit {
 
   ngOnInit(): void {
     // Create a subscription to the params for load more gif
+    // .pipe(takeUntil(this.unSubscribe))
     this.params.asObservable().pipe(
       takeUntil(this.unSubscribe)
     ).subscribe((params) => {
@@ -62,7 +63,7 @@ export class SearchResultComponent implements OnInit {
         this.gifService.searchGifs({
           ...params,
           q: this.searchTerm.value
-        }).pipe(takeUntil(this.unSubscribe)).subscribe({
+        }).subscribe({
           next: (res) => {
             this.searchGifs.next([...this.searchGifs.value, ...res.data]);
             this.pagination = res.pagination;

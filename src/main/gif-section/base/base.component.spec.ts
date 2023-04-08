@@ -3,7 +3,7 @@ import { BaseComponent } from './base.component';
 import { render, screen, fireEvent, RenderResult } from '@testing-library/angular';
 import { Router } from '@angular/router';
 
-fdescribe('BaseComponent', () => {
+describe('BaseComponent', () => {
   let component: RenderResult<BaseComponent>;
   let searchControl: HTMLInputElement;
 

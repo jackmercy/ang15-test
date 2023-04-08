@@ -25,10 +25,10 @@ export class TrendingComponent implements OnInit, OnDestroy {
   private readonly cdr = inject(ChangeDetectorRef);
   private readonly toastr = inject(ToastrService);
 
-  private trendingGifs = new BehaviorSubject<GifItem[]>([]);
+  public trendingGifs = new BehaviorSubject<GifItem[]>([]);
   public trendingGifs$: Observable<GifItem[]> = this.trendingGifs.asObservable();
 
-  private params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating'>>({
+  public params = new BehaviorSubject<Pick<GiphyParams, 'limit' | 'offset' | 'rating'>>({
     limit: 30,
     rating: 'g',
     offset: 0
