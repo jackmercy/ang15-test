@@ -41,11 +41,11 @@ export class InfiniteListComponent {
   }
 
   getGifItemStyles(i: number): string {
-    const randomBg = `background-color: ${this.removeBgIndexes.has(i) ? '' : this.getRanDomColor()};`;
+    const randomBg = `background-color: ${this.removeBgIndexes.has(i) ? '' : this.getRandomColor()};`;
     return `${randomBg}`;
   }
 
-  getRanDomColor(): string {
+  getRandomColor(): string {
     const colors = TW_COLORS_NAME;
     const index = Math.floor(Math.random() * 16);
 

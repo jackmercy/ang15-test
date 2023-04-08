@@ -1,17 +1,14 @@
 
-import { RenderResult, render, screen } from '@testing-library/angular';
-import { SearchResultComponent } from './search-result.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { render, screen } from '@testing-library/angular';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
 import { of } from 'rxjs';
-import { TestBed } from '@angular/core/testing';
-import { GifService } from '../gif.service';
 import { mockGifs } from 'src/shared/mocks/gifs.mock';
+import { GifService } from '../gif.service';
+import { SearchResultComponent } from './search-result.component';
 
-fdescribe('SearchResultComponent', () => {
-  let component: RenderResult<SearchResultComponent>;
-
+describe('SearchResultComponent', () => {
   const setup = async () => {
     let rendered = await render(SearchResultComponent, {
       imports: [HttpClientModule, ToastrModule.forRoot()],
