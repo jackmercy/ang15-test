@@ -1,14 +1,17 @@
-# Ang15Test
+# CAO MINH KHOI - PI.EXCHANGE INTERVIEW
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.0.4.
 
+## ABOUT THIS PROJECT
+    I have spent 3 to 4 hours each day within a week to make this project happen.
+    If I have more time, I would make the loading of gifs smoother and add some features like gif videos, and stickers, and make the code cleaner and more robust.
+    And I would also make the UI more beautiful and user friendly and of course, more unit test cases.
+
+    Thanks for reviewing my project, hope to hear feedback from you soon.
+
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `npm start` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Build
 
@@ -16,12 +19,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Run `npm test` to execute the unit tests.
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
