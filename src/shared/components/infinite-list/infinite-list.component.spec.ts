@@ -52,7 +52,7 @@ describe('InfiniteListComponent', () => {
 
   it('should show loading spinner', async () => {
     const { component, fixture } = await setup(mockGifs.data, true);
-    const loadingEl = screen.getByTestId('loading');
+    const loadingEl = screen.getByTestId('infinite-loading');
     expect(loadingEl).toBeTruthy();
   });
 
